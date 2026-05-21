@@ -390,7 +390,7 @@ async function runScan(){
   ds.textContent='FETCHING…';ds.className='';
   const grid=document.getElementById('grid');
   grid.innerHTML=tickers.map(t=>`<div class="lcard" id="lc-${t}"><div class="spin"></div><div><div class="ltxt">Analyzing <span>${t}</span></div><div class="lsub">live data → AI scoring…</div></div></div>`).join('');
-  await Promise.all(tickers.map(t=>analyzeOne(t)));
+  for(let i=0;i<tickers.length;i++){await analyzeOne(tickers[i]);if(i<tickers.length-1)await new Promise(r=>setTimeout(r,4200));}
   const sorted=Object.values(store).sort((a,b)=>Math.max(b.cs,b.ps)-Math.max(a.cs,a.ps));
   grid.innerHTML=sorted.map(r=>buildCard(r)).join('')||'<div class="empty"><div>No results. Check your API key.</div></div>';
   const calls=sorted.filter(r=>r.sig==='CALL').length;
